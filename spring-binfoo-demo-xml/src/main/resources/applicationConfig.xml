@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="com.binfoo.entity"/>
+
+	<!--bean.id 未设置则取别名第一个充当 bean.id-->
+	<bean name="student0,student1" class="com.binfoo.entity.Student" primary="true">
+		<description>测试</description>
+		<meta key="key0" value="value0"/>
+	</bean>
+	<bean class="com.binfoo.listener.SelfListener"/>
+	<!--<bean name="student1" class="com.binfoo.entity.Student"/>-->
+	<!--<alias name="student" alias="studentAlias00"/>-->
+	<bean id="animals" class="com.binfoo.aware.Animal"/>
+
+	<beans default-lazy-init="false">
+		<bean name="student2" class="com.binfoo.entity.Student"/>
+	</beans>
+
+
+</beans>

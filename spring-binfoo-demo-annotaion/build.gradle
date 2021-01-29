@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+group 'org.springframework'
+version '5.0.20.RELEASE'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(project(":spring-context"))
+//    compileOnly('org.projectlombok:lombok:1.18.12')
+//    annotationProcessor('org.projectlombok:lombok:1.18.2')
+}
