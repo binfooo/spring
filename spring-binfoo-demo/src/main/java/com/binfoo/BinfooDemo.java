@@ -16,9 +16,7 @@ public class BinfooDemo {
 
 	public static void main(String[] args) {
 		ApplicationContext context = new AnnotationConfigApplicationContext(BinfooDemo.class);
-
 		UserConfig bean = context.getBean(UserConfig.class);
 		System.out.println(bean);
-
 	}
 }

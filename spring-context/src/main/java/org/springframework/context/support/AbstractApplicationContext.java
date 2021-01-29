@@ -189,7 +189,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * BeanFactoryPostProcessors to apply on refresh
 	 */
-	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
+		private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
 	/**
 	 * System time in milliseconds when this context started
@@ -933,6 +933,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * initializing all remaining singleton beans.
 	 */
 	protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
+
 		// Initialize conversion service for this context.
 		if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME) &&
 				beanFactory.isTypeMatch(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class)) {
@@ -956,7 +957,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Stop using the temporary ClassLoader for type matching.
 		beanFactory.setTempClassLoader(null);
 
-		// Allow for caching all bean definition metadata, not expecting further changes.
+		// 冻结已注册的 BeanDefinition，不希望后续发生变化
 		beanFactory.freezeConfiguration();
 
 		/**

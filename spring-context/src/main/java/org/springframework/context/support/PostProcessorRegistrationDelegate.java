@@ -53,6 +53,7 @@ final class PostProcessorRegistrationDelegate {
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
 		Set<String> processedBeans = new HashSet<>();
 
+		// 除非是自己实现的上下文环境，否则都是 true
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
@@ -174,9 +175,10 @@ final class PostProcessorRegistrationDelegate {
 		beanFactory.clearMetadataCache();
 	}
 
-	public static void registerBeanPostProcessors(
-			ConfigurableListableBeanFactory beanFactory, AbstractApplicationContext applicationContext) {
+	public static void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory,
+												  AbstractApplicationContext applicationContext) {
 
+		// 从已加载的 BeanFactory 中的所有 Bean 中查找实现 BeanPostProcessor 接口的 Bean
 		String[] postProcessorNames = beanFactory.getBeanNamesForType(BeanPostProcessor.class, true, false);
 
 		// Register BeanPostProcessorChecker that logs an info message when
@@ -192,6 +194,7 @@ final class PostProcessorRegistrationDelegate {
 		List<String> orderedPostProcessorNames = new ArrayList<>();
 		List<String> nonOrderedPostProcessorNames = new ArrayList<>();
 		for (String ppName : postProcessorNames) {
+			// 判断是否实现 PriorityOrdered 接口
 			if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 				BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
 				priorityOrderedPostProcessors.add(pp);
