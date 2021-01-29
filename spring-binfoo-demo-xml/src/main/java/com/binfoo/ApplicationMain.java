@@ -13,7 +13,6 @@ public class ApplicationMain {
 		// context.addApplicationListener();
 		// context.setEnvironment(new StandardEnvironment());
 		// context.getEnvironment().setRequiredProperties("key1");
-		//
 		context.refresh();
 		// System.out.println(context.getBean(Student.class));
 		// System.out.println(context.getBean("student2"));
