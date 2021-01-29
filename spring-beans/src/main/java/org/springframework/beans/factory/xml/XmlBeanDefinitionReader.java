@@ -521,24 +521,24 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		 */
 		final int countBefore = getRegistry().getBeanDefinitionCount();
 
-			/**
-			 * 注册配置文件的 Bean 到容器中
-			 *
-			 * problemReporter 是一个 FailFastProblemReporter 对象
-			 * @see FailFastProblemReporter
-			 *
-			 * eventListener 是 EmptyReaderEventListener 对象，此类里的方法都是空实现
-			 * @see EmptyReaderEventListener
-			 *
-			 * sourceExtractor 是 NullSourceExtractor 对象，直接返回空，也是空实现
-			 * @see NullSourceExtractor
-			 *
-			 * getNamespaceHandlerResolver 默认返回 DefaultNamespaceHandlerResolver 对象，用来获取 xsd 对应的处理器
-			 * @see DefaultNamespaceHandlerResolver
-			 *
-			 * XmlReaderContext 的作用感觉就是这一堆参数的容器，糅合到一起传给 DocumentReader，并美其名为 Context
-			 * 可以看出，Spring 中到处都是策略模式，大量操作被抽象成接口
-			 */
+		/**
+		 * 注册配置文件的 Bean 到容器中
+		 *
+		 * problemReporter 是一个 FailFastProblemReporter 对象
+		 * @see FailFastProblemReporter
+		 *
+		 * eventListener 是 EmptyReaderEventListener 对象，此类里的方法都是空实现
+		 * @see EmptyReaderEventListener
+		 *
+		 * sourceExtractor 是 NullSourceExtractor 对象，直接返回空，也是空实现
+		 * @see NullSourceExtractor
+		 *
+		 * getNamespaceHandlerResolver 默认返回 DefaultNamespaceHandlerResolver 对象，用来获取 xsd 对应的处理器
+		 * @see DefaultNamespaceHandlerResolver
+		 *
+		 * XmlReaderContext 的作用感觉就是这一堆参数的容器，糅合到一起传给 DocumentReader，并美其名为 Context
+		 * 可以看出，Spring 中到处都是策略模式，大量操作被抽象成接口
+		 */
 		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
 
 		/**

@@ -573,7 +573,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			// 加载核心 Bean 代码
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
-			// Prepare the bean factory for use in this context.
+			// 准备 BeanFactory，赋值成员属性变量
 			prepareBeanFactory(beanFactory);
 
 			try {
@@ -620,10 +620,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				finishRefresh();
 
 			} catch (BeansException ex) {
-				if (logger.isWarnEnabled()) {
-					logger.warn("Exception encountered during context initialization - " +
-							"cancelling refresh attempt: " + ex);
-				}
 
 				// Destroy already created singletons to avoid dangling resources.
 				destroyBeans();
@@ -721,6 +717,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @param beanFactory the BeanFactory to configure
 	 */
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
+
 		// Tell the internal bean factory to use the context's class loader etc.
 		beanFactory.setBeanClassLoader(getClassLoader());
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));

@@ -1,6 +1,6 @@
 package com.binfoo;
 
-import com.binfoo.demo.BinfooSerivce;
+import com.binfoo.entity.UserConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,14 +15,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class BinfooDemo {
 
 	public static void main(String[] args) {
-		// ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:springConfig.xml");
 		ApplicationContext context = new AnnotationConfigApplicationContext(BinfooDemo.class);
-		BinfooSerivce serivce = context.getBean(BinfooSerivce.class);
-		serivce.sayHello("zhangsan");
-		// System.out.println(serivce);
 
-		for (String beanDefinitionName : context.getBeanDefinitionNames()) {
-			System.out.println(beanDefinitionName);
-		}
+		UserConfig bean = context.getBean(UserConfig.class);
+		System.out.println(bean);
+
 	}
 }
