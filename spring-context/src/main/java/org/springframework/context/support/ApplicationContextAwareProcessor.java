@@ -118,8 +118,6 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 
 			/**
 			 * 初始化成功之后遍历回调
-			 * 初始化方法位于
-			 * @see AbstractApplicationContext#prepareBeanFactory(org.springframework.beans.factory.config.ConfigurableListableBeanFactory)
 			 */
 			if (bean instanceof ApplicationContextAware) {
 				((ApplicationContextAware) bean).setApplicationContext(this.applicationContext);

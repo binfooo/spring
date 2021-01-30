@@ -24,7 +24,9 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.support.ResourceEditorRegistrar;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -151,7 +153,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	public static final String APPLICATION_EVENT_MULTICASTER_BEAN_NAME = "applicationEventMulticaster";
 
-
 	static {
 		// Eagerly load the ContextClosedEvent class to avoid weird classloader issues
 		// on application shutdown in WebLogic 8.1. (Reported by Dustin Woods.)
@@ -189,7 +190,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * BeanFactoryPostProcessors to apply on refresh
 	 */
-		private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
+	private final List<BeanFactoryPostProcessor> beanFactoryPostProcessors = new ArrayList<>();
 
 	/**
 	 * System time in milliseconds when this context started
@@ -582,12 +583,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				/**
 				 * 实例化前准备工作：遍历调用 BeanFactoryPostProcessor 接口的实现类的方法
-				 * @see org.springframework.beans.factory.config.BeanFactoryPostProcessor
+				 * @see BeanFactoryPostProcessor
+				 * @see BeanDefinitionRegistryPostProcessor
 				 */
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				/**
 				 * 实例化前准备工作：仅注册 BeanPostProcessor 以用于在 Bean 实例化的时候使用
+				 * @see BeanPostProcessor
 				 */
 				registerBeanPostProcessors(beanFactory);
 
@@ -630,8 +633,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Propagate exception to caller.
 				throw ex;
 			} finally {
-				// Reset common introspection caches in Spring's core, since we
-				// might not ever need metadata for singleton beans anymore...
+				// 重置 Spring 的缓存
 				resetCommonCaches();
 			}
 		}
@@ -935,6 +937,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	protected void finishBeanFactoryInitialization(ConfigurableListableBeanFactory beanFactory) {
 
 		// Initialize conversion service for this context.
+		// 判断容器中是否存在类型转换器
 		if (beanFactory.containsBean(CONVERSION_SERVICE_BEAN_NAME) &&
 				beanFactory.isTypeMatch(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class)) {
 			beanFactory.setConversionService(
@@ -944,6 +947,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Register a default embedded value resolver if no bean post-processor
 		// (such as a PropertyPlaceholderConfigurer bean) registered any before:
 		// at this point, primarily for resolution in annotation attribute values.
+		// 判断容器中是否配置默认解析器
+		// 该解析器可以解析 XML 或者 @Value 中的占位符
 		if (!beanFactory.hasEmbeddedValueResolver()) {
 			beanFactory.addEmbeddedValueResolver(strVal -> getEnvironment().resolvePlaceholders(strVal));
 		}
@@ -955,6 +960,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Stop using the temporary ClassLoader for type matching.
+		// 停止临时类加载器
 		beanFactory.setTempClassLoader(null);
 
 		// 冻结已注册的 BeanDefinition，不希望后续发生变化
@@ -972,7 +978,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * {@link org.springframework.context.event.ContextRefreshedEvent}.
 	 */
 	protected void finishRefresh() {
-		// Clear context-level resource caches (such as ASM metadata from scanning).
+
+		// 清空上下文级别相关的资源
 		clearResourceCaches();
 
 		// Initialize lifecycle processor for this context.

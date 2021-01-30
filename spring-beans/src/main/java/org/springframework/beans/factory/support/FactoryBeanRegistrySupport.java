@@ -180,8 +180,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 		// initialized yet: Many FactoryBeans just return null then.
 		if (object == null) {
 			if (isSingletonCurrentlyInCreation(beanName)) {
-				throw new BeanCurrentlyInCreationException(
-						beanName, "FactoryBean which is currently in creation returned null from getObject");
+				throw new BeanCurrentlyInCreationException(beanName, "FactoryBean which is currently in creation returned null from getObject");
 			}
 			object = new NullBean();
 		}
